@@ -72,4 +72,29 @@ public class BaseDao<T> {
         }
     }
 
+    /**
+     * 单属性相等查询
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> findByPropertyEqual(String propertyName, String value,
+                                       String type) {
+        try {
+            String queryString = "from " + typeClass().getCanonicalName()
+                    + " as model where model." + propertyName + "= ?";
+            Session session = sessionFactory.openSession();
+            Query query = session.createQuery(queryString);
+            if (type.equals("String")) {
+                query.setString(0, value.toLowerCase());
+            } else if (type.equals("long")) {
+                query.setLong(0, Long.parseLong(value));
+            } else if (type.equals("int")) {
+                query.setInteger(0, Integer.parseInt(value));
+            }
+            List<T> pojos = query.list();
+            return pojos;
+        } catch (RuntimeException re) {
+            throw re;
+        }
+    }
+
 }
