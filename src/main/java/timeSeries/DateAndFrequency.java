@@ -5,7 +5,8 @@ import java.util.Date;
 /**
  * Created by ywcrm on 2017/6/5.
  */
-class DateAndFrequency {
+class DateAndFrequency implements Comparable<DateAndFrequency> {
+
     private Date date;
     private int frequency = 1;
 
@@ -32,4 +33,7 @@ class DateAndFrequency {
     }
 
 
+    public int compareTo(DateAndFrequency dateAndFrequency) {
+        return this.getDate().compareTo(dateAndFrequency.getDate());
+    }
 }

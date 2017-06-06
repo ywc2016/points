@@ -11,22 +11,22 @@ import java.util.Date;
 /**
  * Created by ywcrm on 2017/6/5.
  */
-public class DateAndFrequencyList extends ArrayList<DateAndFrequency> {
+public class DateAndPointsList extends ArrayList<DateAndPoints> {
 
-    public DateAndFrequency findByDate(Date date) {
-        for (DateAndFrequency dateAndFrequency : this) {
-            if (date.equals(dateAndFrequency.getDate())) {
-                return dateAndFrequency;
+    public DateAndPoints findByDate(Date date) {
+        for (DateAndPoints dateAndPoints : this) {
+            if (date.equals(dateAndPoints.getDate())) {
+                return dateAndPoints;
             }
         }
         return null;
     }
 
     public void show() {
-        for (DateAndFrequency dateAndFrequency : this) {
+        for (DateAndPoints dateAndPoints : this) {
             System.out.println("date:" + TimeConvert
-                    .convertDateToString(dateAndFrequency.getDate())
-                    + ", frequency:" + dateAndFrequency.getFrequency());
+                    .convertDateToString(dateAndPoints.getDate())
+                    + ", points:" + dateAndPoints.getPoints());
         }
     }
 
@@ -49,10 +49,10 @@ public class DateAndFrequencyList extends ArrayList<DateAndFrequency> {
             }
         }
 
-        for (DateAndFrequency dateAndFrequency : this) {
+        for (DateAndPoints dateAndPoints : this) {
             try {
-                FileUtils.writeStringToFile(file, TimeConvert.convertDateToString(dateAndFrequency.getDate())
-                        + "," + dateAndFrequency.getFrequency() + "\r\n", true);
+                FileUtils.writeStringToFile(file, TimeConvert.convertDateToString(dateAndPoints.getDate())
+                        + "," + dateAndPoints.getPoints() + "\r\n", true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

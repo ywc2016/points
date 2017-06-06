@@ -7,6 +7,7 @@ import utils.TimeConvert;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class RedeemSeries {
     /**
      * 按天统计兑换次数
      */
-    public DateAndFrequencyList statisticsByDay() {
+    public void statisticsByDay() {
 
         DateAndFrequencyList dateAndFrequencieList = new DateAndFrequencyList();
         List<RedeemNs> redeemList = redeemDao.findAll();
@@ -33,16 +34,40 @@ public class RedeemSeries {
             }
         }
 //        dateAndFrequencieList.show();
+        //排序
+        Collections.sort(dateAndFrequencieList);
         //写入文件
-        dateAndFrequencieList.writeToCsv("file/redeemTimeSeries.csv");
-        return dateAndFrequencieList;
+        dateAndFrequencieList.writeToCsv("file/general/redeemTimeSeries.csv");
+    }
+
+
+    /**
+     * 按天统计兑换积分数
+     */
+    public void statisticsPointsByDay() {
+
+        DateAndPointsList dateAndPointsList = new DateAndPointsList();
+        List<RedeemNs> redeemList = redeemDao.findAll();
+        for (RedeemNs redeemNs : redeemList) {
+            Date date = TimeConvert.convertStringToDate3(redeemNs.getRequestDate());
+            DateAndPoints dateAndPoints = dateAndPointsList.findByDate(date);
+            if (dateAndPoints != null) {//已存在该日期
+                dateAndPoints.setPoints(dateAndPoints.getPoints() + Integer.parseInt(redeemNs.getRedeemPoint()));
+            } else {//不存在该日期,新增
+                dateAndPointsList.add(new DateAndPoints(date, Integer.parseInt(redeemNs.getRedeemPoint())));
+            }
+        }
+//        dateAndFrequencieList.show();
+        //排序
+        Collections.sort(dateAndPointsList);
+        //写入文件
+        dateAndPointsList.writeToCsv("file/general/redeemPointsTimeSeries.csv");
     }
 
     /**
-     * 按商品和天统计兑换次数
+     * 按商品(>=50)和天统计兑换次数
      */
     public void statisticsByMerchantAndDay() {
-
 
         File file = new File("file/merchant");
         String[] merchants = file.list();
@@ -58,12 +83,95 @@ public class RedeemSeries {
                     dateAndFrequencieList.add(new DateAndFrequency(date));
                 }
             }
-            //        dateAndFrequencieList.show();
+            //dateAndFrequencieList.show();
+            //排序
+            Collections.sort(dateAndFrequencieList);
             //写入文件
-            dateAndFrequencieList.writeToCsv("file/merchant/" + merchant + "/redeemTimeSeries.csv");
+            dateAndFrequencieList.writeToCsv("file/merchant/" + merchant + "/redeemTimeSeries_date.csv");
         }
     }
 
+    /**
+     * 按商品(>=50)和天统计兑换积分数
+     */
+    public void statisticsPointsByMerchantAndDay() {
+
+        File file = new File("file/merchant");
+        String[] merchants = file.list();
+        for (String merchant : merchants) {
+            DateAndPointsList dateAndPointsList = new DateAndPointsList();
+            List<RedeemNs> redeemList = redeemDao.findByPropertyEqual("merchant", merchant, "String");
+            for (RedeemNs redeemNs : redeemList) {
+                Date date = TimeConvert.convertStringToDate3(redeemNs.getRequestDate());
+                DateAndPoints dateAndPoints = dateAndPointsList.findByDate(date);
+                if (dateAndPoints != null) {//已存在该日期
+                    dateAndPoints.setPoints(dateAndPoints.getPoints() + Integer.parseInt(redeemNs.getRedeemPoint()));
+                } else {//不存在该日期,新增
+                    dateAndPointsList.add(new DateAndPoints(date, Integer.parseInt(redeemNs.getRedeemPoint())));
+                }
+            }
+            //dateAndFrequencieList.show();
+            //排序
+            Collections.sort(dateAndPointsList);
+            //写入文件
+            dateAndPointsList.writeToCsv("file/merchant/" + merchant + "/redeemPointsTimeSeries_date.csv");
+        }
+    }
+
+    /**
+     * 按商品(>=50)和月统计兑换次数
+     */
+    public void statisticsByMerchantAndMonth() {
+
+
+        File file = new File("file/merchant");
+        String[] merchants = file.list();
+        for (String merchant : merchants) {
+            DateAndFrequencyList dateAndFrequencieList = new DateAndFrequencyList();
+            List<RedeemNs> redeemList = redeemDao.findByPropertyEqual("merchant", merchant, "String");
+            for (RedeemNs redeemNs : redeemList) {
+                Date date = TimeConvert.convertStringToDate2(redeemNs.getRequestDate());
+                DateAndFrequency dateAndFrequency = dateAndFrequencieList.findByDate(date);
+                if (dateAndFrequency != null) {//已存在该日期
+                    dateAndFrequency.setFrequency(dateAndFrequency.getFrequency() + 1);
+                } else {//不存在该日期,新增
+                    dateAndFrequencieList.add(new DateAndFrequency(date));
+                }
+            }
+            //dateAndFrequencieList.show();
+            //排序
+            Collections.sort(dateAndFrequencieList);
+            //写入文件
+            dateAndFrequencieList.writeToCsv("file/merchant/" + merchant + "/redeemTimeSeries_month.csv");
+        }
+    }
+
+    /**
+     * 按商品(>=50)和月统计兑换积分数
+     */
+    public void statisticsPointsByMerchantAndMonth() {
+
+        File file = new File("file/merchant");
+        String[] merchants = file.list();
+        for (String merchant : merchants) {
+            DateAndPointsList dateAndPointsList = new DateAndPointsList();
+            List<RedeemNs> redeemList = redeemDao.findByPropertyEqual("merchant", merchant, "String");
+            for (RedeemNs redeemNs : redeemList) {
+                Date date = TimeConvert.convertStringToDate2(redeemNs.getRequestDate());
+                DateAndPoints dateAndPoints = dateAndPointsList.findByDate(date);
+                if (dateAndPoints != null) {//已存在该日期
+                    dateAndPoints.setPoints(dateAndPoints.getPoints() + Integer.parseInt(redeemNs.getRedeemPoint()));
+                } else {//不存在该日期,新增
+                    dateAndPointsList.add(new DateAndPoints(date, Integer.parseInt(redeemNs.getRedeemPoint())));
+                }
+            }
+            //dateAndFrequencieList.show();
+            //排序
+            Collections.sort(dateAndPointsList);
+            //写入文件
+            dateAndPointsList.writeToCsv("file/merchant/" + merchant + "/redeemPointsTimeSeries_month.csv");
+        }
+    }
 
     /**
      * 写商品和兑换次数的csv文件
@@ -148,11 +256,15 @@ public class RedeemSeries {
 
     public static void main(String[] args) {
         RedeemSeries redeemSeries = new RedeemSeries();
-//        redeemSeries.statisticsByDay();
+        redeemSeries.statisticsByDay();
 //        redeemSeries.writeMerchantAndRedeemFrequency();
 //        redeemSeries.writeMerchantAndRedeemFrequencyBiggerThan50();
 //        redeemSeries.creatMerchantDir();
-        redeemSeries.statisticsByMerchantAndDay();
+//        redeemSeries.statisticsByMerchantAndDay();
+//        redeemSeries.statisticsByMerchantAndMonth();
+//        redeemSeries.statisticsPointsByMerchantAndDay();
+//        redeemSeries.statisticsPointsByMerchantAndMonth();
+        redeemSeries.statisticsPointsByDay();
     }
 
 
