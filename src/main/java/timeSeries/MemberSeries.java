@@ -2,6 +2,8 @@ package timeSeries;
 
 import db.MemberNsDao;
 import po.MemberNs;
+import utils.DateAndFrequency;
+import utils.DateAndFrequencyList;
 import utils.TimeConvert;
 
 import java.util.Collections;
@@ -20,8 +22,8 @@ public class MemberSeries {
     public DateAndFrequencyList statisticsByDay() {
 
         DateAndFrequencyList dateAndFrequencieList = new DateAndFrequencyList();
-        List<MemberNs> redeemList = memberNsDao.findAll();
-        for (MemberNs memberNs : redeemList) {
+        List<MemberNs> memberNsList = memberNsDao.findAll();
+        for (MemberNs memberNs : memberNsList) {
             Date date = TimeConvert.convertStringToDate3(memberNs.getRegisterDate());
             DateAndFrequency dateAndFrequency = dateAndFrequencieList.findByDate(date);
             if (dateAndFrequency != null) {//已存在该日期

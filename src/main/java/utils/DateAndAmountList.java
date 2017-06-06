@@ -1,7 +1,6 @@
-package timeSeries;
+package utils;
 
 import org.apache.commons.io.FileUtils;
-import utils.TimeConvert;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,22 +10,22 @@ import java.util.Date;
 /**
  * Created by ywcrm on 2017/6/5.
  */
-public class DateAndFrequencyList extends ArrayList<DateAndFrequency> {
+public class DateAndAmountList extends ArrayList<DateAndAmount> {
 
-    public DateAndFrequency findByDate(Date date) {
-        for (DateAndFrequency dateAndFrequency : this) {
-            if (date.equals(dateAndFrequency.getDate())) {
-                return dateAndFrequency;
+    public DateAndAmount findByDate(Date date) {
+        for (DateAndAmount dateAndAmount : this) {
+            if (date.equals(dateAndAmount.getDate())) {
+                return dateAndAmount;
             }
         }
         return null;
     }
 
     public void show() {
-        for (DateAndFrequency dateAndFrequency : this) {
+        for (DateAndAmount dateAndAmount : this) {
             System.out.println("date:" + TimeConvert
-                    .convertDateToString(dateAndFrequency.getDate())
-                    + ", frequency:" + dateAndFrequency.getFrequency());
+                    .convertDateToString(dateAndAmount.getDate())
+                    + ", amount:" + dateAndAmount.getAmount());
         }
     }
 
@@ -49,10 +48,10 @@ public class DateAndFrequencyList extends ArrayList<DateAndFrequency> {
             }
         }
 
-        for (DateAndFrequency dateAndFrequency : this) {
+        for (DateAndAmount dateAndAmount : this) {
             try {
-                FileUtils.writeStringToFile(file, TimeConvert.convertDateToString(dateAndFrequency.getDate())
-                        + "," + dateAndFrequency.getFrequency() + "\r\n", true);
+                FileUtils.writeStringToFile(file, TimeConvert.convertDateToString(dateAndAmount.getDate())
+                        + "," + dateAndAmount.getAmount() + "\r\n", true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

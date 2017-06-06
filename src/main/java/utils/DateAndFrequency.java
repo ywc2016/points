@@ -1,11 +1,11 @@
-package timeSeries;
+package utils;
 
 import java.util.Date;
 
 /**
  * Created by ywcrm on 2017/6/5.
  */
-class DateAndFrequency implements Comparable<DateAndFrequency> {
+public class DateAndFrequency implements Comparable<DateAndFrequency> {
 
     private Date date;
     private int frequency = 1;

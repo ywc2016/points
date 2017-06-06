@@ -1,11 +1,11 @@
-package timeSeries;
+package utils;
 
 import java.util.Date;
 
 /**
  * Created by ywcrm on 2017/6/5.
  */
-class DateAndPoints implements Comparable<DateAndPoints> {
+public class DateAndPoints implements Comparable<DateAndPoints> {
 
     private Date date;
     private int points = 0;
@@ -39,7 +39,7 @@ class DateAndPoints implements Comparable<DateAndPoints> {
         this.points = points;
     }
 
-    public int compareTo(DateAndPoints dateAndFrequency) {
-        return this.getDate().compareTo(dateAndFrequency.getDate());
+    public int compareTo(DateAndPoints dateAndPoints) {
+        return this.getDate().compareTo(dateAndPoints.getDate());
     }
 }
