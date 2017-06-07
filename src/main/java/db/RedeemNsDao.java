@@ -3,8 +3,8 @@ package db;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import po.RedeemNs;
-import timeSeries.MerchantAndFrequency;
-import timeSeries.MerchantAndFrequencyList;
+import utils.MerchantAndFrequency;
+import utils.MerchantAndFrequencyList;
 
 import java.util.List;
 

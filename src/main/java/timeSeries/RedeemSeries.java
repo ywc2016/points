@@ -260,11 +260,11 @@ public class RedeemSeries {
 //        redeemSeries.writeMerchantAndRedeemFrequency();
 //        redeemSeries.writeMerchantAndRedeemFrequencyBiggerThan50();
 //        redeemSeries.creatMerchantDir();
-//        redeemSeries.statisticsByMerchantAndDay();
+        redeemSeries.statisticsByMerchantAndDay();
 //        redeemSeries.statisticsByMerchantAndMonth();
 //        redeemSeries.statisticsPointsByMerchantAndDay();
 //        redeemSeries.statisticsPointsByMerchantAndMonth();
-        redeemSeries.statisticsPointsByDay();
+//        redeemSeries.statisticsPointsByDay();
     }
 
 
