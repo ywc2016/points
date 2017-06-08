@@ -1,5 +1,6 @@
 package timeSeries;
 
+import antlr.StringUtils;
 import db.SalseNsDao;
 import org.apache.commons.io.FileUtils;
 import po.SalesNs;
@@ -102,6 +103,9 @@ public class SalseSeries {
 
         List<String> merchants = getAllMerchant();
         for (String merchant : merchants) {
+            if ("".equals(merchant)) {
+                continue;
+            }
             DateAndAmountList dateAndAmountList = new DateAndAmountList();
             List<SalesNs> salesNsList = salseNsDao.findByPropertyEqual("merchant", merchant, "String");
             for (SalesNs salesNs : salesNsList) {
