@@ -30,7 +30,16 @@ public class DateAndAmountList extends ArrayList<DateAndAmount> {
     }
 
     public void writeToCsv(String path) {
+
+
         File file = new File(path);
+        //创建dir
+        File dir = file.getParentFile();
+        if (dir.isDirectory() && !dir.exists()) {
+            dir.mkdirs();
+            System.out.println(dir.getAbsolutePath() + " 创建完毕.");
+        }
+
         if (!file.exists()) {
             System.out.println(file.getAbsolutePath() + "不存在.将创建.");
             try {

@@ -96,6 +96,33 @@ public class SalseSeries {
 
 
     /**
+     * 按商品(所有)和天统计销售额
+     */
+    public void statisticsAllAmountByMerchantAndDay() {
+
+        List<String> merchants = getAllMerchant();
+        for (String merchant : merchants) {
+            DateAndAmountList dateAndAmountList = new DateAndAmountList();
+            List<SalesNs> salesNsList = salseNsDao.findByPropertyEqual("merchant", merchant, "String");
+            for (SalesNs salesNs : salesNsList) {
+                Date date = TimeConvert.convertStringToDate3(salesNs.getSalesDate());
+                DateAndAmount dateAndAmount = dateAndAmountList.findByDate(date);
+                if (dateAndAmount != null) {//已存在该日期
+                    dateAndAmount.setAmount(dateAndAmount.getAmount() + Double.parseDouble(salesNs.getTotalAmt()));
+                } else {//不存在该日期,新增
+                    dateAndAmountList.add(new DateAndAmount(date, Double.parseDouble(salesNs.getTotalAmt())));
+                }
+            }
+            //dateAndFrequencieList.show();
+            //排序
+            Collections.sort(dateAndAmountList);
+            //写入文件
+            dateAndAmountList.writeToCsv("file/salse/" + merchant + "/salseAmountTimeSeries_date.csv");
+        }
+    }
+
+
+    /**
      * 按商品(销售额前20)和天统计销售额
      */
     public void statisticsAmountByMerchantAndDay() {
@@ -150,12 +177,28 @@ public class SalseSeries {
         return list;
     }
 
+    /**
+     * 得到所有商品
+     *
+     * @return
+     */
+    private List<String> getAllMerchant() {
+        List<String> list = new ArrayList<String>();
+        List<MerchantAndAmount> merchantAndAmountList = salseNsDao.getMerchantAndAmountList();
+        Collections.sort(merchantAndAmountList);
+        for (MerchantAndAmount merchantAndAmount : merchantAndAmountList) {
+            list.add(merchantAndAmount.getMerchant());
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         SalseSeries salseSeries = new SalseSeries();
 //        salseSeries.statisticsAmountByDay();
 //        salseSeries.statisticsAmountByMonth();
 //        salseSeries.writeMerchantAndAmount();
 //        salseSeries.creatMerchantDir();
-        salseSeries.statisticsAmountByMerchantAndDay();
+//        salseSeries.statisticsAmountByMerchantAndDay();
+        salseSeries.statisticsAllAmountByMerchantAndDay();
     }
 }
